@@ -8,71 +8,109 @@
 
 #import "LPFloatingMessageView.h"
 
-#define MESSAGE_WIDTH 100
 
-@implementation LPFloatingMessageView
 
-- (id) init {
-    self = [super init];
+@implementation LPFloatingMessageView {
+    __weak IBOutlet NSLayoutConstraint *loadingIndicatorWidthConstraint;
+    __weak IBOutlet UILabel *messageLabel;
+    
+    __weak id parentView;
+    NSLayoutConstraint *topConstraint;
+}
+
+@synthesize message = _message;
+
+
+- (id) initWithParentView:(id)_parentView {
+    
     if (self != nil) {
-        [self setUpFrame];
-        [self setUpLabel];
+        self = [[[NSBundle mainBundle] loadNibNamed:@"LPFloatingMessageView" owner:self options:nil] lastObject];
+        self.layer.cornerRadius = 5.0;
+        self.layer.masksToBounds = YES;
+        self.loadingIndicatorView.transform = CGAffineTransformMakeScale(0.75, 0.75);
+        parentView = _parentView;
     }
     return self;
 }
 
-- (void) setUpFrame {
-    self.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:255.0/255.0 alpha:0.3]; 
-}
-
-- (void) setUpLabel {
-    self.messageLabel = [[UILabel alloc] init];
-    self.messageLabel.text = @"HOLAA";
-    self.messageLabel.textAlignment = NSTextAlignmentCenter;
-    self.messageLabel.backgroundColor = [UIColor greenColor];
-    [self addSubview:self.messageLabel];
-    
-}
-
-- (void)setUpConstraints {
-    [self setUpBackgroundLayouts];
-    [self setUpLabelLayouts];
-}
 
 
 - (void) setUpBackgroundLayouts {
     [self setTranslatesAutoresizingMaskIntoConstraints:NO];
-    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.superview attribute:NSLayoutAttributeTop multiplier:1.0 constant:20.0];
-    NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.superview attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0];
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:30.0];
-    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:150.0];
     
+    if (!self.loadingIndicatorEnabled) {
+        loadingIndicatorWidthConstraint.constant = 0.0;
+        [self.loadingIndicatorView stopAnimating];
+    }
+    topConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.superview attribute:NSLayoutAttributeTop multiplier:1.0 constant:-30.0];
     [self.superview addConstraint:topConstraint];
-    [self.superview addConstraint:centerXConstraint];
-    [self addConstraint:heightConstraint];
-    [self addConstraint:widthConstraint];
-
+    [self.superview addConstraint:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.superview attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0]]; // Center X Constraint
+    [self.superview addConstraint:[NSLayoutConstraint constraintWithItem:self.superview attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:10.0]]; // Trailing Constraint
+    [self.superview addConstraint:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:self.superview attribute:NSLayoutAttributeLeading multiplier:1.0 constant:10.0]]; // Leading Constraint
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:30.0]]; // Height Constraint
+    [self.superview layoutIfNeeded];
+    
+    
+    
 }
 
-- (void) setUpLabelLayouts {
-    
-    [self.messageLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-    NSLayoutConstraint *trailingSpaceConstraint = [NSLayoutConstraint constraintWithItem:self.messageLabel attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:10.0];
-    NSLayoutConstraint *leadingSpaceConstraint = [NSLayoutConstraint constraintWithItem:self.messageLabel attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:10.0];
-    NSLayoutConstraint *topSpaceConstraint = [NSLayoutConstraint constraintWithItem:self.messageLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0];
-    NSLayoutConstraint *bottomSpaceConstraint = [NSLayoutConstraint constraintWithItem:self.messageLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0];
-    [self addConstraint:trailingSpaceConstraint];
-    [self addConstraint:leadingSpaceConstraint];
-    [self addConstraint:topSpaceConstraint];
-    [self addConstraint:bottomSpaceConstraint];
+- (void) showMessage:(void (^)(BOOL animationFinished)) stateHandler {
+    [parentView addSubview:self];
 
+    topConstraint.constant = 30.0;
+    [UIView animateWithDuration:0.5 delay:0.0 usingSpringWithDamping:0.7 initialSpringVelocity:10.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        [self.superview layoutIfNeeded];
+    }
+    completion:^(BOOL finished) {
+        stateHandler(YES);
+    }];
+    
+}
+
+
+- (void) hideMessage:(void (^)(BOOL animationFinished)) stateHandler {
+    
+    topConstraint.constant = -30.0;
+    [UIView animateWithDuration:0.5 delay:0.0 usingSpringWithDamping:0.7 initialSpringVelocity:10.0 options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         [self layoutIfNeeded];
+                         [self.superview layoutIfNeeded];
+                     }
+                     completion:^(BOOL finished) {
+                         [self removeFromSuperview];
+                         stateHandler(YES);
+                     }
+     ];
+}
+
+
+- (void) setMessage:(NSString *)message {
+    _message = message;
+    messageLabel.text = message;
+    [UIView animateWithDuration:0.4 delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:10.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{       [self.superview layoutIfNeeded];        } completion:nil];
+}
+
+
+- (void) updateMessage:(NSString *)message animationFinished:(void (^)(BOOL animationFinished)) stateHandler loadingIndicatorEnabled:(BOOL)loadingIndicatorEnabled {
+    _message = message;
+    messageLabel.text = message;
+    if (!loadingIndicatorEnabled) {
+        loadingIndicatorWidthConstraint.constant = 0.0;
+        [self.loadingIndicatorView stopAnimating];
+    }
+    else {
+        loadingIndicatorWidthConstraint.constant = 20.0;
+        [self.loadingIndicatorView startAnimating];
+    }
+    [UIView animateWithDuration:0.4 delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:10.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{       [self.superview layoutIfNeeded];        } completion:nil];
 }
 
 
 - (void)didMoveToSuperview {
-    [self setUpConstraints];
+    if (self.superview) {
+        [self setUpBackgroundLayouts];
+    }
 }
-
 
 
 @end

@@ -14,6 +14,7 @@
 		F91933581C567D2D006EFAA6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F91933571C567D2D006EFAA6 /* Assets.xcassets */; };
 		F919335B1C567D2D006EFAA6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F91933591C567D2D006EFAA6 /* LaunchScreen.storyboard */; };
 		F91933651C56813F006EFAA6 /* LPFloatingMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F91933641C56813F006EFAA6 /* LPFloatingMessageView.m */; };
+		F95C17361C591F9400839512 /* LPFloatingMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F95C17351C591F9400839512 /* LPFloatingMessageView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		F919335C1C567D2D006EFAA6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F91933631C56813F006EFAA6 /* LPFloatingMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LPFloatingMessageView.h; path = LPFloatingMessageView/LPFloatingMessageView.h; sourceTree = "<group>"; };
 		F91933641C56813F006EFAA6 /* LPFloatingMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LPFloatingMessageView.m; path = LPFloatingMessageView/LPFloatingMessageView.m; sourceTree = "<group>"; };
+		F95C17351C591F9400839512 /* LPFloatingMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LPFloatingMessageView.xib; path = LPFloatingMessageView/LPFloatingMessageView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 			children = (
 				F91933631C56813F006EFAA6 /* LPFloatingMessageView.h */,
 				F91933641C56813F006EFAA6 /* LPFloatingMessageView.m */,
+				F95C17351C591F9400839512 /* LPFloatingMessageView.xib */,
 			);
 			name = LPFloatingMessageView;
 			sourceTree = "<group>";
@@ -123,6 +126,7 @@
 				TargetAttributes = {
 					F91933471C567D2D006EFAA6 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = JBGR56T3X4;
 					};
 				};
 			};
@@ -149,6 +153,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F95C17361C591F9400839512 /* LPFloatingMessageView.xib in Resources */,
 				F919335B1C567D2D006EFAA6 /* LaunchScreen.storyboard in Resources */,
 				F91933581C567D2D006EFAA6 /* Assets.xcassets in Resources */,
 				F91933561C567D2D006EFAA6 /* Main.storyboard in Resources */,
@@ -277,6 +282,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = FloatingMessage/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = pe.elcomercio.sample.FloatingMessage;
@@ -288,6 +294,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = FloatingMessage/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = pe.elcomercio.sample.FloatingMessage;
@@ -314,6 +321,7 @@
 				F91933611C567D2D006EFAA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

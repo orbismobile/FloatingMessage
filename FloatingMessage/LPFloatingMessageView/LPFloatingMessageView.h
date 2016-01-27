@@ -10,9 +10,12 @@
 
 @interface LPFloatingMessageView : UIView
 
-@property (nonatomic, strong) UILabel *messageLabel;
 @property (nonatomic, strong) NSString *message;
+@property (nonatomic) BOOL loadingIndicatorEnabled;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *loadingIndicatorView;
 
-- (void) setUpConstraints;
-
+- (id) initWithParentView:(id)_parentView;
+- (void) showMessage:(void (^)(BOOL animationFinished)) stateHandler;
+- (void) hideMessage:(void (^)(BOOL animationFinished)) stateHandler;
+- (void) updateMessage:(NSString *)message animationFinished:(void (^)(BOOL animationFinished)) stateHandler loadingIndicatorEnabled:(BOOL)loadingIndicatorEnabled;
 @end

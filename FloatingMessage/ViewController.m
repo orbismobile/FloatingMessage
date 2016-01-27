@@ -9,7 +9,9 @@
 #import "ViewController.h"
 #import "LPFloatingMessageView.h"
 
-@interface ViewController ()
+@interface ViewController () {
+    LPFloatingMessageView *messageView;
+}
 
 @end
 
@@ -17,40 +19,39 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
 }
 
-- (IBAction)showMessage {
-    LPFloatingMessageView *messageView = [[LPFloatingMessageView alloc] init];
-    messageView.message = @"Soy un mensaje";
-    [self.view addSubview:messageView];
-    
-    
-    
+- (void) viewDidAppear:(BOOL)animated {
+    [self setupFloatingMessageView];
 }
 
 
+- (void) setupFloatingMessageView {
+    messageView = [[LPFloatingMessageView alloc] initWithParentView:self.view];
+    messageView.message = @"Cargando Inmuebles";
+    messageView.loadingIndicatorEnabled = YES;
+}
 
-/*
- NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:messageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0];
- [self.view addConstraint:centerYConstraint];
- 
- // Center Horizontally
- NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:messageView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0];
- [self.view addConstraint:centerXConstraint];
- 
- 
- NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:messageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:100.0];
- [messageView addConstraint:heightConstraint];
- 
- NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:messageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:100.0];
- [messageView addConstraint:widthConstraint];
- 
- [self.view addConstraint:centerXConstraint];
- [messageView addConstraint:heightConstraint];
- [messageView addConstraint:widthConstraint];
- 
- */
+- (IBAction)showAndHideMessage :(UIButton *)button {
+    
+    if ([button.titleLabel.text isEqualToString:@"Show Message"]) {
+        [messageView showMessage:^(BOOL animationFinished) {        NSLog(@"Show Animation End");     }];
+        [self.showMessageButton setTitle:@"Hide Message" forState:UIControlStateNormal];
+    }
+    else {
+        [messageView hideMessage:^(BOOL animationFinished) {        NSLog(@"Hide Animation End");     }];
+        [self.showMessageButton setTitle:@"Show Message" forState:UIControlStateNormal];
+    }
+}
+
+
+- (IBAction) updateText {
+    int randomNumber = arc4random_uniform(999999999) + 2;
+    [messageView updateMessage:[NSString stringWithFormat:@"%i inmuebles encontrados", randomNumber] animationFinished:^(BOOL animationFinished) {
+        NSLog(@"Text Update Animation End");
+    } loadingIndicatorEnabled:YES];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -23,7 +23,14 @@
                                     <color key="titleColor" red="0.22412354186389641" green="0.87912441821808507" blue="0.059338813089884229" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="showMessage" destination="BYZ-38-t0r" eventType="touchUpInside" id="3h1-xL-OH5"/>
+                                    <action selector="showAndHideMessage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="z4U-n4-797"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QqW-Sw-Acq">
+                                <rect key="frame" x="258" y="375" width="84" height="30"/>
+                                <state key="normal" title="Update Text"/>
+                                <connections>
+                                    <action selector="updateText" destination="BYZ-38-t0r" eventType="touchUpInside" id="khW-ML-qIi"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -31,8 +38,13 @@
                         <constraints>
                             <constraint firstItem="D10-51-9dL" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="0kJ-pe-a44"/>
                             <constraint firstItem="D10-51-9dL" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="8q1-VF-aQf"/>
+                            <constraint firstItem="QqW-Sw-Acq" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="L8E-cZ-aEh"/>
+                            <constraint firstItem="QqW-Sw-Acq" firstAttribute="top" secondItem="D10-51-9dL" secondAttribute="bottom" constant="60" id="lVy-iX-6Vm"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="showMessageButton" destination="D10-51-9dL" id="36U-EB-OOD"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
