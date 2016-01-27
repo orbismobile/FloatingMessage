@@ -1,7 +1,7 @@
 # FloatingMessage
 Repo for handling and showing floating messages
 
-;) "pon tu readme pe"
+;) "pon tu readme pe 👴🏼"
 
 What you'll find here is
 
