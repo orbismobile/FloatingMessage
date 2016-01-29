@@ -26,7 +26,10 @@
     if (self != nil) {
         self = [[[NSBundle mainBundle] loadNibNamed:@"LPFloatingMessageView" owner:self options:nil] lastObject];
         self.layer.cornerRadius = 5.0;
-        self.layer.masksToBounds = YES;
+        self.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.layer.shadowRadius = 2.5;
+        self.layer.shadowOffset = CGSizeMake(0.0, 0.0);
+        self.layer.shadowOpacity = 0.5;
         self.loadingIndicatorView.transform = CGAffineTransformMakeScale(0.75, 0.75);
         parentView = _parentView;
     }
@@ -68,19 +71,22 @@
 }
 
 
-- (void) hideMessage:(void (^)(BOOL animationFinished)) stateHandler {
+- (void) hideMessageAfterDelay:(CGFloat)delay animationFinished:(void (^)(BOOL animationFinished)) stateHandler {
     
-    topConstraint.constant = -30.0;
-    [UIView animateWithDuration:0.5 delay:0.0 usingSpringWithDamping:0.7 initialSpringVelocity:10.0 options:UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-                         [self layoutIfNeeded];
-                         [self.superview layoutIfNeeded];
-                     }
-                     completion:^(BOOL finished) {
-                         [self removeFromSuperview];
-                         stateHandler(YES);
-                     }
-     ];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        topConstraint.constant = -30.0;
+        [UIView animateWithDuration:5.5 delay:0.0 usingSpringWithDamping:20.0 initialSpringVelocity:4.0 options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+                             [self layoutIfNeeded];
+                             [self.superview layoutIfNeeded];
+                         }
+                         completion:^(BOOL finished) {
+                             [self removeFromSuperview];
+                             stateHandler(YES);
+                         }
+         ];
+    });
+    
 }
 
 

@@ -39,7 +39,7 @@
         [self.showMessageButton setTitle:@"Hide Message" forState:UIControlStateNormal];
     }
     else {
-        [messageView hideMessage:^(BOOL animationFinished) {        NSLog(@"Hide Animation End");     }];
+        [messageView hideMessageAfterDelay:1.5 animationFinished:^(BOOL animationFinished) {        NSLog(@"Hide Animation End");     }];
         [self.showMessageButton setTitle:@"Show Message" forState:UIControlStateNormal];
     }
 }

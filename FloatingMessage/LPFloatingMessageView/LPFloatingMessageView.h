@@ -16,6 +16,6 @@
 
 - (id) initWithParentView:(id)_parentView;
 - (void) showMessage:(void (^)(BOOL animationFinished)) stateHandler;
-- (void) hideMessage:(void (^)(BOOL animationFinished)) stateHandler;
+- (void) hideMessageAfterDelay:(CGFloat)delay animationFinished:(void (^)(BOOL animationFinished)) stateHandler;
 - (void) updateMessage:(NSString *)message animationFinished:(void (^)(BOOL animationFinished)) stateHandler loadingIndicatorEnabled:(BOOL)loadingIndicatorEnabled;
 @end
